@@ -1,37 +1,29 @@
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { Button, Nav, Navbar } from "react-bootstrap";
-import Log from "./Components/Log";
-import Posts from "./Components/Posts";
-import Register from "./Components/Register";
+import {initializeApp} from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getAuth, GoogleAuthProvider} from "firebase/auth";
+import NavbarLogged from "./Components/NavBar/NavbarLogged";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAzTtygQPwBeQBZoKR1UqJhEzwzDeuwokQ",
+  authDomain: "adatbazis-a6c6f.firebaseapp.com",
+  projectId: "adatbazis-a6c6f",
+  storageBucket: "adatbazis-a6c6f.appspot.com",
+  messagingSenderId: "331372587861",
+  appId: "1:331372587861:web:c2f64a7cd1652ad3871ddc",
+  measurementId: "G-2YR2PZFG90"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth= getAuth(app);
+const provider= new GoogleAuthProvider();
 
 function App() {
   return (
-    <div className="App">
-      <Router>
-          <Navbar bg="dark" variant="dark">
-            <Button className="btn" variant="success" as={Link} to={"/"}>
-              Home
-            </Button>
-            <Button variant="success" as={Link} to={"/login"}>
-              Login
-            </Button>
-            <Button variant="success" as={Link} to={"/register"}>
-              Register
-            </Button>
-            <Button variant="success" as={Link} to={"/posts"}>
-              Post
-            </Button>
-          </Navbar>
-        <Routes>
-          <Route path="/login" element={<Log />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/posts" element={<Posts />} />
-        </Routes>
-      </Router>
+    <div className="App">      
+      <NavbarLogged/>
     </div>
   );
 }
-
 export default App;
+export {auth, provider};
