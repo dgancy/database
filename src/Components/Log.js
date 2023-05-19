@@ -1,13 +1,16 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { signInWithPopup } from "firebase/auth";
+import { getAuth, signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../App";
-//import { useState } from "react";
+
+var user;
 
 export default function Log() {
   const handleClick = () => {
     signInWithPopup(auth, provider).then((data) => {
       console.log(data);
+      user = data.user.displayName;
+      console.log("username: " + user);
     });
   };
 
@@ -20,3 +23,4 @@ export default function Log() {
     </div>
   );
 }
+export { user };

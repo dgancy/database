@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Button, Navbar } from "react-bootstrap";
 import Log from "../Log";
 
-export default function NavbarLogged() {
+export default function NavbarLogout() {
 
   return (
     <Router>
