@@ -14,15 +14,27 @@ h1{
 .maxwidth{
   max-width: 20%;
   margin-left: 40%;
+  border-color: green;
 }
 
 .postwidth{
   max-width: 40%;
-  margin-left: 30%;
+  margin-left: 20%;
+  position: absolute;
+  top: 15%;
+}
+.postwidthright{
+  max-width: 40%;
+  margin-left: 60%;
+  position: absolute;
+  top: 15%;
 }
 
 .postinput{
-  width: 500px;
-  height: 100px;
+  width: 50px;
+  height: 40px;
+}
+div{
+  padding-bottom: 18px;
 }
 

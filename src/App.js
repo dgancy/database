@@ -1,10 +1,10 @@
 import "./App.css";
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+//import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import NavbarLogged from "./Components/NavBar/NavbarLogged";
-import NavbarLogout from "./Components/NavBar/NavbarLogout";
-import { user } from "./Components/Log";
+import NavbarLogged from "./Components/NavbarLogged";
+import NavbarLogout from "./Components/NavbarLogout";
+import { getFunctions } from "firebase/functions";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAzTtygQPwBeQBZoKR1UqJhEzwzDeuwokQ",
@@ -19,14 +19,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+const functions = getFunctions(app);
 
 function App() {
+  console.log(localStorage.getItem("user"));
+  if (localStorage.getItem("user")) {
+    return (
+      <div className="App">
+        <NavbarLogged />
+      </div>
+    );
+  }
   return (
     <div className="App">
-      <NavbarLogged />
+      <NavbarLogout />
     </div>
   );
 }
 
 export default App;
-export { auth, provider };
+export { auth, provider, functions };
