@@ -2,10 +2,12 @@ import "./App.css";
 import { initializeApp } from "firebase/app";
 //import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import NavbarLogged from "./Components/NavbarLogged";
-import NavbarLogout from "./Components/NavbarLogout";
+import NavbarView from "./Components/NavbarView";
 import { getFunctions } from "firebase/functions";
-
+import {BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Foods from "./Components/Foods";
+import Cart from "./Components/Cart";
+import Orders from "./Components/Orders";
 const firebaseConfig = {
   apiKey: "AIzaSyAzTtygQPwBeQBZoKR1UqJhEzwzDeuwokQ",
   authDomain: "adatbazis-a6c6f.firebaseapp.com",
@@ -22,20 +24,18 @@ const provider = new GoogleAuthProvider();
 const functions = getFunctions(app);
 
 function App() {
-  console.log(localStorage.getItem("user"));
-  if (localStorage.getItem("user")) {
     return (
-      <div class="App">
-        <NavbarLogged />
+      <div class="App"> 
+        <Router>
+        <NavbarView />
+        <Routes>
+        <Route path="/" element={<Foods />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/orders" element={<Orders />} />
+      </Routes>
+        </Router>
       </div>
     );
-  }else{
-  return (
-    <div class="App">
-      <NavbarLogout />
-    </div>
-  );
-  }
 }
 
 export default App;

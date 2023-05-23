@@ -1,30 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { functions } from "../App";
 import { httpsCallable } from "firebase/functions";
 
-var OrdersArray = [];
-
 export default function Foods() {
   const [foods, setFoods] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
+  const needFetch = useRef(true)
+  const fetchFood = async () => {
+    const request = httpsCallable(functions, "getFoods");
+    request().then((data) => {
+      setFoods(data.data);
+      setLoaded(true);
+    });
+  };
+  let ordersArray = JSON.parse(localStorage.getItem("cart"));
   useEffect(() => {
-    OrdersArray = JSON.parse(localStorage.getItem("cart"));
-    const fetchFood = async () => {
-      const request = httpsCallable(functions, "getFoods");
-      request().then((data) => {
-        setFoods(data.data);
-        console.log(data);
-        setLoaded(true);
-      });
-    };
-    return ()=>fetchFood();
+    if(needFetch.current)
+      fetchFood();
+    needFetch.current = false
   }, []);
 
   const addToCart = (food) => {
-    OrdersArray.push(food);
-    console.log("OA: " + OrdersArray);
-    localStorage.setItem("cart", JSON.stringify(OrdersArray));
+    if(!ordersArray){
+      ordersArray = []
+    }
+    ordersArray.push(food);
+    localStorage.setItem("cart", JSON.stringify(ordersArray));
   };
   if (isLoaded) {
     return (
