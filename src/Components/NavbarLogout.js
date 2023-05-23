@@ -26,9 +26,9 @@ export default function NavbarLogout() {
           user.role = 1;
         });
       localStorage.setItem('user', JSON.stringify(user));
-      
       window.location.replace("/");
       window.location.reload();
+      console.log("test");
     });
   };
 
@@ -38,7 +38,7 @@ export default function NavbarLogout() {
         <Button className="btn" variant="success" as={Link} to={"/"}>
           Foods
         </Button>
-        <Button variant="success" onClick={handleClick}>
+        <Button variant="success" onClick={()=>handleClick()}>
           Login
         </Button>
       </Navbar>

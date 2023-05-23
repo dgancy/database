@@ -25,16 +25,17 @@ function App() {
   console.log(localStorage.getItem("user"));
   if (localStorage.getItem("user")) {
     return (
-      <div className="App">
+      <div class="App">
         <NavbarLogged />
       </div>
     );
-  }
+  }else{
   return (
-    <div className="App">
+    <div class="App">
       <NavbarLogout />
     </div>
   );
+  }
 }
 
 export default App;

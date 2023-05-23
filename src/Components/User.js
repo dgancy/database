@@ -8,7 +8,7 @@ export default function User() {
   console.log("username: " + username);
 
   function AdData() {
-    navigate("/datadd");
+    //navigate("/datadd");
   }
 
   return (
