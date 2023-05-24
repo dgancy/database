@@ -31,6 +31,7 @@ export default function NavbarView() {
     }
     signInWithPopup(auth, provider).then(async (data) => {
       setUserLogin(true)
+      navigate("/")
       const request = httpsCallable(functions, "getUser");
       var user = {
         displayName: data.user.displayName,

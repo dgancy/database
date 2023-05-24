@@ -32,14 +32,17 @@ export default function Orders() {
     return price;
   };
   const acceptOrder = (order) => {
-    const updatedOrder = order;
-    updatedOrder.data.orderStatus = "Elfogadva";
-
-    setOrders((prevOrders) =>
-      prevOrders.map((prevOrder) =>
-        prevOrder.id === order.id ? updatedOrder : prevOrder
-      )
-    );
+    const request = httpsCallable(functions, "acceptOrder");
+    document.getElementById("myBtn").disabled = true;
+    request({ orderId: order.id }).then((data) => {
+      const updatedOrder = order;
+      updatedOrder.data.orderStatus = "Elfogadva";
+      setOrders((prevOrders) =>
+        prevOrders.map((prevOrder) =>
+          prevOrder.id === order.id ? updatedOrder : prevOrder
+        )
+      );
+    });
   };
   if (isLoaded.current) {
     return (
@@ -62,7 +65,7 @@ export default function Orders() {
                     {userIsAdmin && (
                       <div class="col-md-4">
                         {order.data.orderStatus === "Függőben" && (
-                          <Button onClick={() => acceptOrder(order)}>
+                          <Button id="myBtn" onClick={() => acceptOrder(order)}>
                             {order.data.orderStatus}
                           </Button>
                         )}

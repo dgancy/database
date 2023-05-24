@@ -10,6 +10,7 @@ export default function Cart() {
   const navigate = useNavigate();
   const [orderCount, setOrderCount] = useState(false);
   const handleSubmit = () => {
+    document.getElementById("myBtn").disabled = true;
     const request = httpsCallable(functions, "submitOrder");
     request(orders).then((data) => {
       console.log(data);
@@ -77,7 +78,7 @@ export default function Cart() {
         </label>
       </div>
       {orderCount && (
-        <Button variant="success" onClick={() => handleSubmit()}>
+        <Button variant="success" id="myBtn" onClick={() => handleSubmit()}>
           Submit
         </Button>
       )}
