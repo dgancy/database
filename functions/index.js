@@ -92,4 +92,18 @@ exports.getUserOrders = functions.https.onCall(async (data,context)=>{
     return orders;
 })
 
+exports.acceptOrder = functions.https.onCall(async (data,context) =>{
+    if(!context.auth){
+        throw new functions.https.HttpsError("unauthenticated",'only auth')
+    }
+    const user = await admin.firestore().collection("users").doc(context.auth.uid).get();
+    if(user.data().role != 2){
+        throw new functions.https.HttpsError("permission-denied","Forbidden")
+    }
+    const orderId = data.orderId;
+    const order =  (await admin.firestore().collection("orders").doc(orderId).get()).data()
+    order.orderStatus = "Elfogadva"
+    admin.firestore().collection("orders").doc(orderId).set(order);
+})
+
 
