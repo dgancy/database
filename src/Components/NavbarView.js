@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import { Button, Navbar } from "react-bootstrap";
-import Foods from "./Foods";
-import Cart from "./Cart";
-import Orders from "./Orders";
+import Cash from "./Images/dollar.png";
 import ShopCart from "./Images/shoppingcart.png";
 import { getAuth, signInWithPopup } from "firebase/auth";
 import { httpsCallable } from "firebase/functions";
@@ -60,10 +58,10 @@ export default function NavbarView() {
           SignOut
         </Button>
           <Link to={"/cart"}>
-            <img src={ShopCart}></img>
+            <img style={{marginLeft:"5px"}} src={ShopCart}></img>
           </Link>
           <Link to={"/orders"}>
-            <img src={ShopCart}></img>
+            <img style={{marginLeft:"10px"}} src={Cash}></img>
           </Link> </>
         )
         }

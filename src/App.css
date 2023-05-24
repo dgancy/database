@@ -18,9 +18,9 @@ h1{
 }
 
 .postwidth{
-  max-width: 40%;
+  max-width: 25%;
   margin-left: 20%;
-  position: absolute;
+  position: relative;
   top: 15%;
 }
 .postwidthright{

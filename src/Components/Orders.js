@@ -8,9 +8,9 @@ import "react-bootstrap";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
-  const needFetch = useRef(true)
-  const isLoaded = useRef(false)
-  const userIsAdmin = JSON.parse(localStorage.getItem("user")).role === 2
+  const needFetch = useRef(true);
+  const isLoaded = useRef(false);
+  const userIsAdmin = JSON.parse(localStorage.getItem("user")).role === 2;
   const fetchOrders = async () => {
     const request = httpsCallable(functions, "getUserOrders");
     request().then((data) => {
@@ -20,8 +20,7 @@ export default function Orders() {
   };
 
   useEffect(() => {
-    if(needFetch.current)
-      fetchOrders();
+    if (needFetch.current) fetchOrders();
     needFetch.current = false;
   }, []);
   const calculateOrderPrice = (order) => {
@@ -32,70 +31,81 @@ export default function Orders() {
     });
     return price;
   };
-  const acceptOrder = (order) =>{
+  const acceptOrder = (order) => {
     const updatedOrder = order;
     updatedOrder.data.orderStatus = "Elfogadva";
-    // További lépések a frissített rendelés mentéséhez
-    // ...
 
-    // Frissítsük az állapotot a frissített rendeléssel
     setOrders((prevOrders) =>
       prevOrders.map((prevOrder) =>
-        prevOrder.id === order.id
-          ? updatedOrder
-          : prevOrder
+        prevOrder.id === order.id ? updatedOrder : prevOrder
       )
     );
-  }
-if(isLoaded.current){
-  return (
-    <>
-      <div id="accordion">
-        {orders.map((order) => (
-          <div class="card">
-            {console.log(order)}
-            <div
-              class="card-header"
-              data-bs-toggle="collapse"
-              href={"#collapseOne"+order.id}
-            >
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-4">
-                    {new Date(order.data.timestamp._seconds * 1000).toDateString()}
+  };
+  if (isLoaded.current) {
+    return (
+      <>
+        <div id="accordion">
+          {orders.map((order) => (
+            <div class="card">
+              {console.log(order)}
+              <div>
+                <div class="col-md-14">
+                  <div class="row">
+                    <div class="col-md-4">
+                      {new Date(
+                        order.data.timestamp._seconds * 1000
+                      ).toDateString()}
+                    </div>
+                    {!userIsAdmin && (
+                      <div class="col-md-4">{order.data.orderStatus}</div>
+                    )}
+                    {userIsAdmin && (
+                      <div class="col-md-4">
+                        {order.data.orderStatus === "Függőben" && (
+                          <Button onClick={() => acceptOrder(order)}>
+                            {order.data.orderStatus}
+                          </Button>
+                        )}
+                        {order.data.orderStatus === "Elfogadva" &&
+                          order.data.orderStatus}
+                      </div>
+                    )}
+                    <div class="col-md-4">
+                      {calculateOrderPrice(order.data)} Ft{" "}
+                      <Button
+                        class="card-header"
+                        data-bs-toggle="collapse"
+                        href={"#collapseOne" + order.id}
+                      >
+                        <b>+</b>
+                      </Button>
+                    </div>
                   </div>
-                  {!userIsAdmin && <div class="col-md-4">{order.data.orderStatus}</div>}
-                  {userIsAdmin && <div class="col-md-4">
-                    {order.data.orderStatus === "Függőben" && <Button onClick={()=>acceptOrder(order)}>{order.data.orderStatus}</Button> }
-                    {order.data.orderStatus === "Elfogadva" && order.data.orderStatus }
-                    </div>}
-                  <div class="col-md-4">{calculateOrderPrice(order.data)} Ft</div>
+                </div>
+              </div>
+              <div
+                id={"collapseOne" + order.id}
+                class="collapse show"
+                data-bs-parent="#accordion"
+              >
+                <div class="card-body">
+                  {order.data.data.map((item) => (
+                    <div class="col-md-14">
+                      <div class="row">
+                        <div class="col-md-4">{item.food.data.name}</div>
+                        <div class="col-md-4">{item.count} db</div>
+                        <div class="col-md-4">{item.food.data.price} Ft</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-            <div
-              id={"collapseOne"+order.id}
-              class="collapse show"
-              data-bs-parent="#accordion"
-            >
-              <div class="card-body">
-                {order.data.data.map((item) => (
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div class="col-md-4">{item.food.data.name}</div>
-                      <div class="col-md-4">{item.count} db</div>
-                      <div class="col-md-4">{item.food.data.price} Ft</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
-  );
-                }else{
-                  return (<>loading...</>)
-                }
+          ))}
+        </div>
+      </>
+    );
+  } else {
+    return <>loading...</>;
+  }
 }

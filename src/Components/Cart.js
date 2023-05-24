@@ -2,19 +2,20 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { functions } from "../App";
 import { httpsCallable } from "firebase/functions";
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
   const [orders, setOrders] = useState([]);
-  const priceRef = useRef(0)
-  const navigate = useNavigate()
+  const priceRef = useRef(0);
+  const navigate = useNavigate();
+  const [orderCount, setOrderCount] = useState(false);
   const handleSubmit = () => {
     const request = httpsCallable(functions, "submitOrder");
-      request(orders).then((data) => {
-        console.log(data);
-        localStorage.removeItem("cart");
-        navigate("/")
-      });
+    request(orders).then((data) => {
+      console.log(data);
+      localStorage.removeItem("cart");
+      navigate("/");
+    });
   };
   const ordersA = async () => {
     var dict = {};
@@ -31,18 +32,19 @@ export default function Cart() {
       });
       const arrayFromDictionary = Object.keys(dict).map((key) => dict[key]);
       setOrders(arrayFromDictionary);
-      var price = 0
+      var price = 0;
       arrayFromDictionary.forEach((order) => {
         price += order.count * order.food.data.price;
       });
-      priceRef.current = price
+      priceRef.current = price;
       console.log(price);
       console.log(orders);
+      setOrderCount(true);
     }
   };
 
   useEffect(() => {
-    return ()=>ordersA();
+    return () => ordersA();
   }, []);
 
   return (
@@ -69,11 +71,21 @@ export default function Cart() {
 
       <div class="form-group row justify-content-md-center">
         <label for="inputPassword">
-          <pre class="col-sm-7 col-form-label mx-auto">Paying: {priceRef.current} Ft</pre>
+          <pre class="col-sm-7 col-form-label mx-auto">
+            Paying: {priceRef.current} Ft
+          </pre>
         </label>
       </div>
-
-      <Button variant="success" onClick={()=> handleSubmit()}>Submit</Button>
+      {orderCount && (
+        <Button variant="success" onClick={() => handleSubmit()}>
+          Submit
+        </Button>
+      )}
+      {!orderCount && (
+        <Button variant="success" disabled onClick={() => handleSubmit()}>
+          Submit
+        </Button>
+      )}
     </div>
   );
 }
