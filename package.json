@@ -10,6 +10,7 @@
     "firebase": "^9.22.0",
     "firebase-functions": "^4.4.0",
     "firebase-tools": "^12.1.0",
+    "init": "^0.1.2",
     "postcss-normalize": "^10.0.1",
     "react": "^18.2.0",
     "react-auth-kit": "^2.12.2",
